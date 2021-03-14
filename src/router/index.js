@@ -34,6 +34,14 @@ export default new Router({
 				auth: true
 			},
 			name: 'Home'
+		},
+		{
+			path: '/systemManager',
+			component: resolve => require(['../pages/systemManager.vue'], resolve),
+			meta: {
+				auth: true
+			},
+			name: 'systemManager'
 		}
 	]
 })
