@@ -34,7 +34,7 @@
     };
 </script>
 
-<style>
+<style  scoped>
 /*  self 样式 start  */
 .window-self{
     height: 50%;

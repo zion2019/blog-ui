@@ -28,7 +28,7 @@
     };
 </script>
 
-<style>
+<style scoped>
 /*********头部导航栏********/
 .zion-menu {
   position: absolute;

@@ -10,8 +10,8 @@
 
 <script>
 import menu from '../components/navigation.vue';
-import catalog from './catalog.vue';
-import aboutMe from './aboutMe.vue';
+import catalog from './Catalog.vue';
+import aboutMe from './AboutMe.vue';
 
     export default {
         name:'zion',
@@ -52,6 +52,15 @@ import aboutMe from './aboutMe.vue';
         width: 100%;
         height: 100%;
         background: #193, 228, 224;
+    }
+
+    /* 网格样式 zion */
+    body{
+        height: 100vh;
+        background: linear-gradient(to right,rgb(250, 244, 230) 1px,transparent 1px),linear-gradient(to bottom,rgb(250, 244, 230) 1px,transparent 1px);
+        background-repeat: repeat;/* 默认为 repeat */
+        background-size: 40px 40px;
+        background-color: rgb(193, 228, 224);
     }
 
 </style>

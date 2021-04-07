@@ -25,10 +25,10 @@ export default new Router({
 			meta: {
 				auth: true
 			},
-			name: 'home'
+			name: 'Home'
 		}, //首页
 		{
-			path: '/Home',
+			path: '/home',
 			component: resolve => require(['../pages/Home.vue'], resolve),
 			meta: {
 				auth: true
@@ -36,12 +36,23 @@ export default new Router({
 			name: 'Home'
 		},
 		{
-			path: '/systemManager',
-			component: resolve => require(['../pages/systemManager.vue'], resolve),
+			path: '/login',
+			component: resolve => require(['../pages/system/Login.vue'], resolve),
 			meta: {
 				auth: true
 			},
-			name: 'systemManager'
+			name: 'Login'
+		},
+		{
+			path: '/system',
+			component: resolve => require(['../pages/system/SysLayout.vue'], resolve),
+			children:[
+				{path: '',component: ()=> import('@/pages/system/BlogManager.vue')},
+				{path: '/blogManager',component: ()=> import('@/pages/system/BlogManager.vue')},
+				{path: '/catalogManager',component: ()=> import('@/pages/system/CatalogManager.vue')},
+				{path: '/blogEdit',component: ()=> import('@/pages/system/BlogEdit.vue')},
+			],
+			name: 'SystemManager'
 		}
 	]
 })

@@ -44,7 +44,7 @@ import window from '../components/window.vue'
     };
 </script>
 
-<style>
+<style scoped>
     .catalog-body{
         /* border: 1px solid; */
         width: 97%;
