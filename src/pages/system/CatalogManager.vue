@@ -4,19 +4,19 @@
     <div class="tools">
       <div class="tools-form">
         <el-col :span="8" class="grid">
-          <el-input placeholder="类别名称"></el-input>
+          <el-input v-model="search.name" placeholder="类别名称"></el-input>
         </el-col>
       </div>
       <div class="tools-butten">
         <el-col :span="3" class="grid" :gutter="1">
-          <el-button type="success" icon="el-icon-search">搜索</el-button>
+          <el-button type="success" icon="el-icon-search" @click="loadData()">搜索</el-button>
         </el-col>
       </div>
     </div>
 
     <!-- 操作栏 -->
     <el-row>
-      <el-button type="primary" size="small" @click="addCatagoty()">增加</el-button>
+      <el-button type="primary" size="small" @click="toAdd()">增加</el-button>
     </el-row>
 
     <!-- 数据列表 -->
@@ -26,53 +26,54 @@
         style="width: 100%; height: 100%"
         :row-class-name="tableRowClassName">
         <el-table-column prop="id" label="id" v-if="false"> </el-table-column>
-        <el-table-column prop="catagoryName" label="类别名称" width="180">
+        <el-table-column prop="name" label="类别名称" width="180">
         </el-table-column>
-        <el-table-column prop="catagoryCode" label="类别编码" width="180">
+        <el-table-column prop="code" label="类别编码" width="180">
         </el-table-column>
         <el-table-column prop="createdTime" label="创建时间"> </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click="edit(scope.row)" type="text" size="small"
+            <el-button @click="toEdit(scope.row)" type="text" size="small"
               >编辑</el-button
             >
-            <el-button @click="del(scope.$id)" type="text" size="small"
+            <el-button @click="del(scope.row.id)" type="text" size="small"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageInfo.current" :page-size="pageInfo.size" layout="total, prev, pager, next" :total="pageInfo.total"> </el-pagination>
 
       <!-- 编辑 -->
       <el-dialog title="编辑分类" :visible.sync="editDialogVisible">
-        <el-form ref="form" :model="newCatagory" label-width="80px">
+        <el-form ref="form" :model="catagory" label-width="80px">
           <el-form-item label="类别名称">
-            <el-input v-model="newCatagory.catagoryName"  autocomplete="off"></el-input>
+            <el-input v-model="catagory.name"  autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item label="类别编码">
-            <el-input v-model="newCatagory.catagoryCode" autocomplete="off" ></el-input>
+            <el-input v-model="catagory.code" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveCatagoty">确 定</el-button>
+          <el-button type="primary" @click="saveOrUpdate()">确 定</el-button>
         </div>
       </el-dialog>
 
       <!-- 新增 -->
       <el-dialog title="新增分类" :visible.sync="saveDialogVisible">
-        <el-form ref="form" :model="newCatagory" label-width="80px">
+        <el-form ref="form" :model="catagory" label-width="80px">
           <el-form-item label="类别名称">
-            <el-input v-model="newCatagory.catagoryName" autocomplete="off" ></el-input>
+            <el-input v-model="catagory.name" autocomplete="off" ></el-input>
           </el-form-item>
           <el-form-item label="类别编码">
-            <el-input v-model="newCatagory.catagoryCode" autocomplete="off" ></el-input>
+            <el-input v-model="catagory.code" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="saveDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveCatagoty()">确 定</el-button>
+          <el-button type="primary" @click="saveOrUpdate()">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -80,35 +81,32 @@
 </template>
 
 <script>
+import {blogCategoryData,saveOrEditCategory,removeCategory} from '../../utils/server.js'
 export default {
   data() {
     return {
-      catagoryList: [
-        {
-          catagoryCode: "JAVA",
-          catagoryName: "JAVA",
-          createdTime: "2020-01-01 00:00:00",
-        },
-        {
-          catagoryCode: "WORDPRESS",
-          catagoryName: "WORDPRESS",
-          createdTime: "2020-01-01 00:00:00",
-        },
-        {
-          catagoryCode: "YUNWEI",
-          catagoryName: "运维",
-          createdTime: "2020-01-01 00:00:00",
-        },
-      ],
-      editDialogVisible: false,
-      saveDialogVisible: false,
-      newCatagory: {
-        catagoryName: "",
-        catagoryCode: "",
+      pageInfo:{
+        current:1
+        ,size:10
+        ,total:10 
+      }
+      ,search:{
+        name:""
+      }
+      ,catagoryList: []
+      ,editDialogVisible: false
+      ,saveDialogVisible: false
+      ,catagory: {
+        id:"",
+        name: "",
+        code: "",
       },
     };
   },
-  methods: {
+  created(){
+    this.loadData();
+  }
+  ,methods: {
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {
         return "warning-row";
@@ -117,26 +115,51 @@ export default {
       }
       return "";
     },
-    edit(row) {
-      this.newCatagory = {
-        catagoryName: row.catagoryName,
-        catagoryCode: row.catagoryCode,
+    loadData(){
+      blogCategoryData(this.pageInfo.current,this.pageInfo.size,this.search,(data)=>{
+        this.pageInfo.total = data.total;
+        this.catagoryList = data.records;
+      });
+    },
+    toAdd() {
+      this.catagory = {};
+      this.saveDialogVisible = true;
+    },
+    toEdit(row) {
+      this.catagory = {
+        id:row.id,
+        name: row.name,
+        code: row.code,
       };
       this.editDialogVisible = true;
     },
-    saveCatagoty() {
-      console.log("保存分类");
-    },
-    addCatagoty() {
-      this.newCatagory = {};
-      this.saveDialogVisible = true;
+    saveOrUpdate() {
+      saveOrEditCategory(this.catagory,(res)=>{
+        if(res.data){
+          this.editDialogVisible = false;
+          this.saveDialogVisible = false;
+          this.loadData();
+        }else{
+          this.$alert(res.message);
+        }
+      });
     },
     del(id) {
       this.$confirm("确认删除？")
         .then((_) => {
-          this.UsercatagoryList.splice(id, 1);
+          removeCategory(id,(success)=>{
+            this.loadData();
+          },(failed)=>{
+              this.$alert(failed.message);
+          })
         })
         .catch((_) => {});
+    },
+    handleSizeChange(){
+      this.loadData();
+    },
+    handleCurrentChange(){
+      this.loadData();
     },
   },
 };

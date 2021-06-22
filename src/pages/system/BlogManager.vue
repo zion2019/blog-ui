@@ -43,7 +43,8 @@
 <script>
 export default {
   data() {
-    return { 
+    return {
+        
         bolgList:[
             {
             "id":"1"

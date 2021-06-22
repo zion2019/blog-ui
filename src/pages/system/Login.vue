@@ -6,7 +6,7 @@
          label-position="left" 
          label-width="0px" 
          class="demo-ruleForm login-page">
-            <h3 class="title">系统登录</h3>
+            <!-- <h3 class="title">系统登录</h3> -->
             <el-form-item prop="username">
                 <el-input type="text" 
                     v-model="ruleForm2.username" 
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import {UserLogin} from '../../utils/server.js'
 export default {
     data(){
         return {
@@ -53,17 +54,24 @@ export default {
             this.$refs.ruleForm2.validate((valid) => {
                 if(valid){
                     this.logining = true;
-                    if(this.ruleForm2.username === 'admin' && 
-                       this.ruleForm2.password === '123456'){
-                           this.logining = false;
-                           sessionStorage.setItem('user', this.ruleForm2.username);
-                           this.$router.push({path: '/'});
-                    }else{
-                        this.logining = false;
-                        this.$alert('username or password wrong!', 'info', {
-                            confirmButtonText: 'ok'
-                        })
-                    }
+                    // 请求登录接口
+                    UserLogin(this.ruleForm2.username,this.ruleForm2.password,(response) => {
+                        if(response == undefined){
+                            this.logining = false;
+                            this.$alert('服务错误', '登录失败', { confirmButtonText: 'ok'})
+                        }else{
+                            var accessToken = response.access_token;
+                            if(accessToken != null && accessToken != undefined){
+                                this.logining = false;
+                                sessionStorage.setItem('user',JSON.stringify(response));
+                                this.$router.push({path: '/system'});
+                            }else{
+                                this.logining = false;
+                                this.$alert(response.data.msg, '登录失败', { confirmButtonText: 'ok'});
+                            }
+                        }
+                    })
+
                 }else{
                     console.log('error submit!');
                     return false;
