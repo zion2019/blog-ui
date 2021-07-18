@@ -34,7 +34,7 @@ export default {
 <style>
 .el-main {
   background-color: #f5f7f9;
-  overflow:hidden;
+  /* overflow:hidden; */
   padding: 10px;
 }
 

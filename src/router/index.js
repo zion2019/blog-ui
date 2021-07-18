@@ -44,6 +44,14 @@ export default new Router({
 			name: 'Login'
 		},
 		{
+			path: '/post',
+			component: resolve => require(['../pages/PostDetail.vue'], resolve),
+			meta: {
+				auth: true
+			},
+			name: 'post'
+		},
+		{
 			path: '/system',
 			component: resolve => require(['../pages/system/SysLayout.vue'], resolve),
 			children:[

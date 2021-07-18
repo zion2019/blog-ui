@@ -32,10 +32,14 @@ time, mark, audio, video {
   border: 0;
   font: inherit;
 }
-
+html {
+	  height:100%;
+    margin:0 auto;
+    padding:0;
+}
 body {
   height: 100vh;
-  background-color: rgb(193, 228, 224);
+  background-color: rgb(15, 114, 171);
 }
 #app {
   height: 100%;

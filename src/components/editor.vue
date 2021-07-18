@@ -19,6 +19,7 @@ import "../../static/tinymce/plugins/contextmenu";
 import "../../static/tinymce/plugins/wordcount";
 import "../../static/tinymce/plugins/colorpicker";
 import "../../static/tinymce/plugins/textcolor";
+import "../../static/tinymce/plugins/codesample";
 export default {
   name: "tinymce",
   // 因为我是在项目中使用的  所以这个时候我是采用了组件传值一系列方法来使用的
@@ -54,9 +55,9 @@ export default {
         skin_url: "/static/tinymce/skins/lightgray", // 配置项的路径
         height: 300,
         plugins:
-          "link lists image code table colorpicker textcolor wordcount contextmenu",
+          "link lists image code table colorpicker textcolor wordcount contextmenu codesample formatselect",
         toolbar:
-          "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat",
+          "bold italic underline strikethrough | fontsizeselect | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat | codesample",
         branding: false,
         // 图片读取前缀路径
         images_upload_base_path: this.picUrl,

@@ -8,14 +8,14 @@
           @open="handleOpen"
           @close="handleClose"
         >
-          <el-menu-item index="1" @click="toPath('/catalogManager')">
-            <i class="el-icon-menu"></i>
-            <span slot="title">类别管理</span>
-          </el-menu-item>
-
-          <el-menu-item index="2" @click="toPath('/blogManager')">
+          <el-menu-item index="1" @click="toPath('/blogManager')">
             <i class="el-icon-s-order"></i>
             <span slot="title">博文管理</span>
+          </el-menu-item>
+
+          <el-menu-item index="2" @click="toPath('/catalogManager')">
+            <i class="el-icon-menu"></i>
+            <span slot="title">类别管理</span>
           </el-menu-item>
 
           <el-menu-item index="3" @click="toPath('message')">
@@ -49,19 +49,6 @@ export default {
         path: path
       })
     },
-    goPage(link) {
-      if (link === "catalog") {
-        this.$router.push({
-          path: '/catalog'
-        })
-        // $this.$router.push("/catalog");
-      } else if ((link == "order")) {
-        this.$router.push({
-          path: '/order'
-        })
-        // $this.$router.push("/order");
-      } else {}
-    }
   }
 };
 </script>

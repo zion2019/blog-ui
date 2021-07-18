@@ -4,13 +4,13 @@
     <div class="tools">
       <div class="tools-form">
         <el-col :span="8" class="grid">
-          <el-input placeholder="所属分类"></el-input>
+          <el-input  v-model="search.catagoryName" placeholder="所属分类"></el-input>
         </el-col>
          <el-col :span="8" class="grid" style="margin-left: 10%;">
-          <el-input placeholder="博文名称"></el-input>
+          <el-input v-model="search.title" placeholder="博文名称"></el-input>
         </el-col>
       </div>
-      <div class="tools-butten">
+      <div class="tools-butten" @click="loadData()">
         <el-col :span="3" class="grid" :gutter="1">
           <el-button type="success" icon="el-icon-search">搜索</el-button>
         </el-col>
@@ -19,72 +19,84 @@
 
      <!-- 操作栏 -->
     <el-row>
-      <el-button type="primary" size="small" @click="addBlog()">新增博文</el-button>
+      <el-button type="primary" size="small" @click="toEditBlog()">新增博文</el-button>
     </el-row>
 
     <!-- 数据列表 -->
     <div class="data-table">
       <el-table :data="bolgList" style="width: 100%; height: 100%" :row-class-name="tableRowClassName">
         <el-table-column prop="id" label="id" v-if="false"> </el-table-column>
-        <el-table-column prop="catagoryName" label="所属分类" width="180"> </el-table-column>
-        <el-table-column prop="bolgName" label="博文名称" width="180"> </el-table-column>
+
+        <el-table-column prop="coverImg" label="封面" width="200">
+           <template slot-scope="scope">
+              <div class="demo-image__preview">
+                  <el-image  style="width: 100px; height: 100px; margin-left:10px;" :src= scope.row.coverImg></el-image>
+              </div>
+        　　</template>
+        </el-table-column>
+        <el-table-column prop="categoryName" label="所属分类" width="180"> </el-table-column>
+        <el-table-column prop="title" label="博文名称" width="180"> </el-table-column>
         <el-table-column prop="createdTime" label="创建时间"> </el-table-column> <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click="edit(scope.row)" type="text" size="small" >编辑</el-button >
-            <el-button @click="del(scope.$id)" type="text" size="small" >删除</el-button >
+            <el-button @click="toEditBlog(scope.row.id)" type="text" size="small" >编辑</el-button >
+            <el-button @click="del(scope.row.id)" type="text" size="small" >删除</el-button >
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageInfo.current" :page-size="pageInfo.size" layout="total, prev, pager, next" :total="pageInfo.total"> </el-pagination>
     </div>
 
   </div>
 </template>
 
 <script>
+import {blogDatas,removeBlog} from '../../utils/server.js'
 export default {
   data() {
     return {
-        
-        bolgList:[
-            {
-            "id":"1"
-            ,"catagoryName":"JAVA"
-            ,"bolgName":"入门到放弃系列1"
-            ,"createdTime":"2020-01-01"
-            },
-            {
-            "id":"2"
-            ,"catagoryName":"JAVA"
-            ,"bolgName":"入门到放弃系列2"
-            ,"createdTime":"2020-01-01"
-            },
-            {
-            "id":"3"
-            ,"catagoryName":"JAVA"
-            ,"bolgName":"入门到放弃系列3"
-            ,"createdTime":"2020-01-01"
-            },
-            
-        ]
-
+        pageInfo:{
+          current:1
+          ,size:10
+          ,total:10 
+        },
+        search:{
+          catagoryName:''
+          ,title:''
+        },
+        bolgList:[],
      };
   },
+  created(){
+    this.loadData();
+  },
   methods: {
-    addBlog() {
-        console.log("跳转新增博文页面");
+    loadData(){
+      blogDatas(this.pageInfo.current,this.pageInfo.size,this.search,(res)=>{
+        this.pageInfo.total = res.total;
+        this.bolgList = res.records;
+      })
     },
-    edit(row) {
-      console.log("跳转编辑页面");
+    handleSizeChange(){
+      this.loadData();
+    },
+    handleCurrentChange(){
+      this.loadData();
+    },
+    toEditBlog(id) {
       this.$router.push({
-        path: "/blogEdit"
+        path: "/blogEdit",
+        query:{'blogId':id}
       })
     },
     del(id) {
       this.$confirm("确认删除？")
         .then((_) => {
-          this.bolgList.splice(id, 1);
-        })
-        .catch((_) => {});
+          removeBlog(id,(success)=>{
+            this.loadData();
+          },(failed)=>{
+              this.$alert(failed.message);
+          })
+        }).catch((_) => {});
     },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {

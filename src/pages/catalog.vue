@@ -1,136 +1,225 @@
 <template>
     <zion-window :windowClass="windowClass">
         <div class="catalog-body" >
-            <div class="catalog-bar">
-                <button class="catalog-butten">JAVA</button>
-                <button class="catalog-butten">WORDPRESS</button>
-                <button class="catalog-butten">运维</button>
+        <!-- <div style="height:10px"></div> -->
+        <div class="catalog-filter">
+            <mySelector class="mySelect" :width="90" :height="40" :datas="catalogs" @labelChangeEvent = "loadPosts"></mySelector>
+            <div class="serach">
+                <div><input placeholder="Search..."></div>
+                    <i class="imgthree fa fa-search fa-lg"></i>
+                </div>
             </div>
-            <div class="catalog-content">
-                <div class="card-one">
-                    <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3069058608,2121953491&fm=15&gp=0.jpg">
-                    <div class="card-descript">
-                        <span title="123">程序员的自我修养程序员的自我修养程序员的自我修养程序员的自我修养程序员的自我修养程序员的自我修养程序员的自我修养</span>
+            <!-- 时间轴内容 -->
+            <div class="timeLine-body">
+                <div class="timeLine-item" v-for="post in this.posts" :key="post.id">
+                    <!-- 时间轴上的线 -->
+                    <div class="timeLine-line"></div>
+                    <!-- 时间轴上的点 -->
+                    <i class="imgthree fa fa-circle fa-1x"></i>
+                    <!-- 指向的线条 -->
+                    <div class="timeLine-item-line"></div>
+                    <!-- 时间 -->
+                    <div class="timeLine-item-date">{{post.createdTime}}</div>
+                    <!-- 博文卡片 -->
+                    <div class="timeLine-item-card">
+                        <!-- 预览图片 -->
+                        <img :src="post.coverImg">
+                        <!-- 文本内容 -->
+                        <div class="item-card-content">
+                            <div class="card-title">{{post.title}}</div>
+                            <div class="card-content-preview">
+                                {{post.profile}}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-one">
-
-                </div>
-
-                <div class="card-one">
-
-                </div>
-                <div class="card-three">
-
-                </div>
             </div>
+
         </div>
     </zion-window>
 </template>
 <script>
+import {blogDatas,blogCategorySelection} from '../utils/server.js'
 import window from '../components/window.vue'
+import mySelector from '../components/my-selector.vue'
     export default {
         data() {
             return {
                 windowClass: "window-catalog",
+                posts:[],
+                catalogs:[],
+                optionId:null,
             };
         },
+        created(){
+            // 博文分类
+            this.loadCategory();
+        },
         methods:{
-          
+            loadCategory(){
+                blogCategorySelection((res)=>{
+                    this.catalogs = res;
+                })
+            },
+            loadPosts({ optionId, label }){
+                this.optionId = optionId != null?optionId:this.optionId;
+                if(this.optionId == null){
+                    return;
+                }
+                var search = {categoryId:this.optionId,title:""};
+                blogDatas(1,100,search,(res)=>{
+                    this.posts = res.records;
+                })
+            },
         },
         components: { //定义组件
-            'zion-window':window
+            'zion-window':window,
+            'mySelector':mySelector,
         },
     };
 </script>
 
 <style scoped>
-    .catalog-body{
-        /* border: 1px solid; */
-        width: 97%;
-        height: 97%;
-        margin: 6px auto;
-        border-radius: 10px;
+    /** 文章列表 start */
+    .card-content-preview {
+        margin-left: 30px;
+        margin-top: 10px;
+        font-size: 15px;
+        font-family: 微软雅黑;
     }
-    .catalog-bar{
-        height: 8%;
-        border: 1px solid;
-        border-radius: 10px;
-        box-shadow: 0 1px 2px 1px #000
+    .card-title{
+        margin-left: 30px;
+        margin-top: 10px;
+        font-size: 21px;
+        font-family: 微软雅黑;
     }
-    .catalog-butten{
-        margin-left: 10%;
-        width: 20%;
+    .item-card-content {
+        height: 100%;
+        width: 60%;
+        /* background-color: red; */
+    }
+    .timeLine-item-card > img {
+        height: 100%;
+        width: 40%;
+        max-width: 250px;
+        max-height: 200px;
+        border: 2px solid;
+        border-radius: 15px;
+    }
+    .timeLine-item-card {
+        cursor: pointer;
+        width: 80%;
         height: 80%;
+        top: 45px;
+        left: 60px;
+        /* background-color: red; */
+        position: absolute;
+        display: flex;
+    }
+    .timeLine-item-date {
+        position: absolute;
+        left: 50px;
+        font-size: 20px;
+    }
+    .timeLine-item-line {
+        position: absolute;
+        width: 40px;
+        background-color: #000;
+        height: 2px;
+        left: 1px;
+        top: 12px;
+    }
+    .timeLine-line {
+        position: absolute;
+        background-color: #000;
+        top:15px;
+        left: 6px;
+        width: 3px;
+        height: 100%;
+    }
+    .timeLine-item .imgthree {
+        position: absolute;
+        top: 5px
+    }
+    .timeLine-item {
+        height: 40%;
+        width: 100%;
+        /* border: 1px solid; */
+        position: relative;
+    }
+    .timeLine-body {
+        position: absolute;
+        left: 20%;
+        top: 3%;
+        height: 95%;
+        width: 77%;
+        overflow-y:scroll;
+    }
+    /** 文章列表 end */
+
+    /** 操作栏 start  */
+    .serach{
+        border: 2px solid;
+        border-radius: 5px;
+        height: 40px;
+        width: 90%;
+        position: absolute;
+        margin-left: 5%;
+        margin-top: 40%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        line-height: 40px;
+    }
+    .serach > div {
+        width: 83.5%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .serach > div > input{
+        width: 90%;
+        height: 100%;
         background-color: rgb(250, 244, 230);
         border: 0px;
-        font-size: 27px;
-        font-family: 微软雅黑;
-        cursor: pointer;/*鼠标变成手指样式*/
-        transition: all 0.1s;/*所有属性变化在0.6秒内执行动画*/
+        outline-style: none;
+        font-size: 15px;
+        padding-left: 7%;
     }
-    .catalog-butten:hover{
-	    transform: scale(1.03);/*鼠标放上之后元素变成1.4倍大小*/
+    .serach .imgthree {
+        width: 10%;
+        cursor: pointer;
+        line-height: 40px;
     }
-    .catalog-content{
-        width: 100%;
-        height: 92%;
-        overflow-y:auto;
+    .catalog-filter {
+        height: 100%;
+        width: 18%;
+        position: absolute;
+        border-right: 3px solid;
+        margin-top: 0.3%;
     }
+    /** 操作栏 end  */
 
-    .catalog-content > div > img {
-        border-radius: 10px;
+    .catalog-body{
         width: 100%;
-        height: 80%;
-    }
+        height: 100%;
+        border-radius: 10px;
+        position: relative;
+    }  
 
     /* 滚动条样式 */
-    .catalog-content::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {
         background-color: rgb(250, 244, 230);
     }
-    .catalog-content::-webkit-scrollbar {
-        width: 2px;
+    ::-webkit-scrollbar {
+        width: 4px;
         height: 18%;
         background-color: black;
     }
-    .catalog-content::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {
         border-radius: 50px;
         background-color: #555;
     }
-    .card-one{
-        float: left;
-        margin-right: 3%;
-        margin-top: 2%;
-        width: 30%;
-        height: 50%;
-        border: 1px solid;
-        border-radius: 10px;
-        box-shadow: 0 1px 1px 1px #000;
-    }
-
-    .card-three{
-        float: left;
-        margin-right: 3%;
-        margin-top: 2%;
-        width: 97%;
-        height: 100%;
-        border: 1px solid;
-        border-radius: 10px;
-        box-shadow: 0 1px 1px 1px #000;
-    }
-    .card-descript {
-        padding: 14px;
-    }
-
-    .card-descript > span{
-        white-space:nowrap;/*强制单行显示*/
-        text-overflow:ellipsis;/*超出部分省略号表示*/
-        overflow:hidden;/*超出部分隐藏*/
-        width: 100%;/*设置显示的最大宽度*/
-        display:inline-block;
-        font-family: '微软雅黑';
-        font-size: 15px;
-    }
-        
 
 </style>

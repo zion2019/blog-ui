@@ -48,15 +48,14 @@
 }
 .window-self .window-tools{
     position: absolute;
-    border-radius: 20px 20px 0px 0px;
-    border: 2px solid;
+    border-bottom: 2px solid;
     height: 10%;
     width: 100%;
 }
 .window-catalog .blog-container{
     position: absolute;
-    top:5.5%;
-    border: 2px solid;
+    top:5.1%;
+    /* border: 2px solid; */
     height: 94%;
     width: 100%;
     border-radius: 0px 0px 25px 25px;
@@ -67,23 +66,23 @@
     height: 90%;
     width: 70%;
     top: 5%;
-    left: 10%;
+    left: 15%;
     background-color: rgb(250, 244, 230);
     border-radius: 25px;
     border: 3px solid;
     position: absolute;
+    max-width: 1000px;
+    max-height: 800px;
 }
 .window-catalog .window-tools{
     position: absolute;
-    border-radius: 20px 20px 0px 0px;
-    border: 2px solid;
+    border-bottom: 2px solid;
     height: 5%;
     width: 100%;
 }
 .window-self .blog-container{
     position: absolute;
     top: 10.5%;
-    border: 2px solid;
     height: 89%;
     width: 100%;
     border-radius: 0px 0px 25px 25px;
