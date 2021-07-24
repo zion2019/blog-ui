@@ -1,9 +1,9 @@
 <template>
-    <div v-bind:class="windowClass" >
+    <div v-bind:class="windowClass" :id="windowClass" >
         <div class="window-tools" v-drag-parent >
-            <div class="butten-close" @click="showCatalog()"></div>
-            <div class="butten-max"></div>
-            <div class="butten-min"></div>
+            <div id="butten-close" class="butten-close" @click="showCatalog()"></div>
+            <div id="butten-max" class="butten-max"></div>
+            <div id="butten-min" class="butten-min"></div>
         </div>
 
         <div class="blog-container">
@@ -37,10 +37,12 @@
 <style  scoped>
 /*  self 样式 start  */
 .window-self{
-    height: 50%;
-    width: 70%;
+    height: 30%;
+    width: 40%;
+    min-width: 750px;
+    min-height: 300px;
     top: 20%;
-    left: 10%;
+    left: 30%;
     background-color: rgb(250, 244, 230);
     border-radius: 25px;
     border: 3px solid;
@@ -65,8 +67,8 @@
 .window-catalog{
     height: 90%;
     width: 70%;
-    top: 5%;
-    left: 15%;
+    top: 10%;
+    left: 23%;
     background-color: rgb(250, 244, 230);
     border-radius: 25px;
     border: 3px solid;
@@ -122,6 +124,45 @@
     top: 20%;
     border-radius: 60px;
     border: 2px solid;
+}
+
+/** 小于1920  */
+@media screen and (max-width: 1800px) {
+    #window-self {
+        top: 20%;
+        left: 22%;
+    }
+
+    #window-catalog {
+        top: 7%;
+        left: 12%;
+    }
+}
+
+/* 手机端样式 */
+@media screen and (max-width: 400px) {
+    #window-self {
+        width: 90%;
+        height: 300px;
+        min-width: 0;
+        min-height: 0;
+        top: 20%;
+        left: 5%;
+    }
+
+    #butten-close {
+        left: 2%;
+    }
+    #butten-max {
+        left: 10%;
+    }
+    #butten-min {
+        left: 19%;
+    }
+
+    .unit-menu {
+        display: none;
+    }
 }
 
 </style>

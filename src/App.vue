@@ -37,13 +37,28 @@ html {
     margin:0 auto;
     padding:0;
 }
-body {
-  height: 100vh;
-  background-color: rgb(15, 114, 171);
-}
+body{
+      /* 网格样式 zion */
+      /* height: 100vh;
+      background: linear-gradient(to right,rgb(250, 244, 230) 1px,transparent 1px),linear-gradient(to bottom,rgb(250, 244, 230) 1px,transparent 1px);
+      background-repeat: repeat;
+      background-size: 40px 40px;
+      background-color: rgb(193, 228, 224); */
+      /* 底图 */
+      width: 100%;
+      height: 100%;
+      background:url(/static/img/bg-content.jpg) no-repeat;
+      background-attachment: fixed;
+      background-size: 100%;
+      min-height: 100vh;
+      background-repeat: repeat;
+      width: 100%;
+      overflow-x: hidden;
+  }
+
 #app {
   height: 100%;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .tools {

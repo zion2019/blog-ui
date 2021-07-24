@@ -1,9 +1,27 @@
 <template>
-    <zion-window :windowClass="windowClass"></zion-window>
+    <zion-window :windowClass="windowClass">
+    
+        <div class="aboutMe">
+            <img src="../../static/img/logo.jpeg"/>
+            <div class="say">
+                Hey,我是Zion！JAVA、PHP后端码农一枚。
+                <br/>
+                学习&nbsp;•&nbsp;生活&nbsp;•&nbsp;分享
+                <br/>
+                各位大佬请戳Blog文件夹了解~
+            </div>
+            <div class="bar">
+                <i @click="href('https://a1.qpic.cn/psc?/V13ppSdF0VAuNC/ruAMsa53pVQWN7FLK88i5mtFXPs42DfqHwzHskuAFhme.fZdxRsyPDj3*qt5pt1XFILBanedQsm0BfO4h43W6KwzLHXZiALtDFTKJMLQRBY!/c&ek=1&kp=1&pt=0&bo=AAIAAgAAAAABFzA!&t=5&tl=3&vuin=2628607936&tm=1626879600&sce=60-2-2&rf=0-0')" class="imgthree fa fa-weixin fa-1x"></i>
+                <a href="mailto:for_ly@foxmail.com"> <i class=" fa fa-envelope fa-1x"></i></a>
+                <i @click="href('https://github.com/zion2019')" class="imgthree fa fa-github fa-lg"></i>
+            </div>
+
+        </div>
+    </zion-window>
 </template>
 
 <script>
-import window from '../components/window.vue'
+import zionWindow from '../components/window.vue'
 export default {
     data() {
         return {
@@ -11,11 +29,53 @@ export default {
         };
     },
     methods:{
-        
+        href(url){
+            window.open(url, "_blank");
+        },
     },
     components: { //定义组件
-        'zion-window':window
+        'zion-window':zionWindow
     },
 };
 
 </script>
+<style scoped>
+    .aboutMe .say {
+        margin: auto;
+        width: 400px;
+        font-family: fantasy;
+        font-size: 20px;
+    }
+    .aboutMe .bar {
+        display: flex;
+        width: 300px;
+        height: 30px;
+        margin-left: 50%;
+        /* background-color: red; */
+    }
+
+    .aboutMe .bar {
+        display: flex;
+        width: 300px;
+        height: 30px;
+        margin-left: 65%;
+        margin-top: 10px;
+    }
+
+    .aboutMe .bar .imgthree {
+        margin-left: 10px;
+        margin-top: 4px;
+        cursor: pointer;
+    }
+
+    .aboutMe > img {
+        width: 70px;
+        height: 70px;
+        margin: 30px 0 0 45%;
+        border-radius: 25%;
+    }
+    .bar > a {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+</style>

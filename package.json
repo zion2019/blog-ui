@@ -16,6 +16,7 @@
     "font-awesome": "^4.7.0",
     "tinymce": "^4.8.2",
     "vue": "^2.5.2",
+    "vue-outline": "^4.0.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

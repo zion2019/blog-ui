@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/style.less'
 import store from './store'
 import 'font-awesome/css/font-awesome.min.css';
+import outline from 'vue-outline';
+Vue.use(outline);
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
