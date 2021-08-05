@@ -28,7 +28,7 @@
 
             <div class="content" id = 'content'>
                 <div class="content-title">
-                    <span>为什么说无产阶级革命是最深刻，最广泛，最彻底的革命</span>
+                    <span>{{postTitle}}</span>
                     <div class="title-profiles">
                     <div><i class="imgthree fa fa-calendar fa-1x"></i>&nbsp; 2019年12月12日&nbsp; &nbsp; <br/></div>
                     <div><i class="imgthree fa fa-eye fa-1x"></i>&nbsp; 888&nbsp; &nbsp; </div>
@@ -52,57 +52,28 @@
     
 </template>
 <script>
+import {blogInfo} from '../utils/server.js'
 export default {
     data() {
         return {
             sidebarClass:"sidebar",
             navTree: [],
-            "content":"<p><strong>为什么说无产阶级革命是最深刻，最广泛，最彻底的革命</strong></p> <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p> <p>② 无产阶级革命最终要消灭所有剥削阶级与统治阶级。</p><p>③ 无产阶级革命是为大多数人某利益的革命。</p><p>④ 无产阶级革命是不断发展的历史进程（马克思主义对于资本主义社会规律的研究表明资本主义必亡）。</p>"
-            + " <p>① <h1>H1</h1>无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制<h2>哈哈哈</h2>，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，<h3>建立公有制</h3>建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <h1>H1</h1> "
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>① 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            + " <p>⑩ 无产阶级革命目的是消灭私有制，建立公有制，与以往所有私有制革命有本质的区别。</p>"
-            ,
+            postTitle:"",
+            content:"",
         };
     },
     created(){
+        console.log(this.$route.query.postId);
+        blogInfo(this.$route.query.postId
+        ,(res)=>{
+            console.log(res);
+            this.content = res.content;
+            this.postTitle = res.title;
+        }
+        ,(failed) => {
+            console.log("接口请求错误");
+        }
+        )
     },
     methods:{
         refreshNavTree (treeData) {
@@ -160,16 +131,20 @@ export default {
         text-align: center;
         font-size: 20px;
         font-weight: bold;
+        height: 60px;
+        padding-top: 5px;
     }
 
     .content-data{
         padding-left: 20px;
         padding-top: 20px;
+        min-height: 1000px;
     }
 
     .ontline {
         padding-top: 20px;
         padding-left: 35px;
+        height: 60px;
     }
 
     #main {
@@ -191,13 +166,13 @@ export default {
 
     .sidebar .sidebar-inner {
         width: 96%;
-        height: 75%;
+        height: 100%;
         margin-top: 35px;
         margin-left: 5px;
         /* padding: 35px 0px 60px 20px; */
-        border-radius: 20px;
-        background-color: #faf4e6;
-        border: 2px solid;
+        /* border-radius: 20px; */
+        background-color: white;
+        /* border: 2px solid; */
     }
 
     .sidebar {
@@ -208,7 +183,8 @@ export default {
         width: 280px;
         bottom: 0;
         overflow-x: hidden;
-        overflow-y: auto;
+        /* overflow-y: auto; */
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         -ms-overflow-style: none;
     }
@@ -216,11 +192,11 @@ export default {
         position: relative;
         /* padding: 35px 0; */
         max-width: 1000px;
-        margin: 0 auto;
+        margin: 0 300px 0 auto;
         /* padding-left: 50px; */
-        background-color: #faf4e6;
-        border-radius: 25px;
-        border: 2px solid;
+        background-color: white;
+        /* border-radius: 25px;
+        border: 2px solid; */
         box-shadow: 0 0 10px rgb(0 0 0 / 20%);
     }
 

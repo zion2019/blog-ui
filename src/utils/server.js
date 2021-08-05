@@ -4,7 +4,7 @@ import qs from 'qs';
 //公共路径
 // let portUrl = "http://www.mangoya.cn/port/";
 // let portUrl = "http://"+window.location.host+"/";
-let portUrl = "http://localhost:9302/";
+let portUrl = "http://127.0.0.1:9302/";
 
 /**
  * 用户登录
@@ -148,7 +148,7 @@ const blogDatas = (current,size,search,callback) => {
     }
 
     // 请求参数
-    let url = portUrl + 'blog/post';
+    let url = portUrl + 'blog/post/page';
     var params = {
         'current': current,
         'size': size,
@@ -242,7 +242,7 @@ const blogInfo = (blogId,successCb,failCb) => {
     axios.get(url,{headers:{'Authorization':token}
     }).then(num => {
         if(num.data.code == '0000'){
-            successCb && successCb(num.data)
+            successCb && successCb(num.data.data)
         }else{
             failCb && failCb(num.data)
         }

@@ -21,7 +21,7 @@
                     <!-- 时间 -->
                     <div class="timeLine-item-date">{{post.createdTime}}</div>
                     <!-- 博文卡片 -->
-                    <div class="timeLine-item-card">
+                    <div class="timeLine-item-card" @click="toBlogDeatil(post.id)">
                         <!-- 预览图片 -->
                         <img :src="post.coverImg">
                         <!-- 文本内容 -->
@@ -40,7 +40,7 @@
 </template>
 <script>
 import {blogDatas,blogCategorySelection} from '../utils/server.js'
-import window from '../components/window.vue'
+import zionWindow from '../components/window.vue'
 import mySelector from '../components/my-selector.vue'
     export default {
         data() {
@@ -71,9 +71,18 @@ import mySelector from '../components/my-selector.vue'
                     this.posts = res.records;
                 })
             },
+            toBlogDeatil(blogId){
+                let routeUrl = this.$router.resolve({ 
+                    path:"/post",
+                    query: {
+                        postId: blogId,
+                    }
+                });
+                window.open(routeUrl.href, '_blank');
+            },
         },
         components: { //定义组件
-            'zion-window':window,
+            'zion-window':zionWindow,
             'mySelector':mySelector,
         },
     };
@@ -89,7 +98,6 @@ import mySelector from '../components/my-selector.vue'
     }
     .card-title{
         margin-left: 30px;
-        margin-top: 10px;
         font-size: 21px;
         font-family: 微软雅黑;
     }
@@ -99,20 +107,21 @@ import mySelector from '../components/my-selector.vue'
         /* background-color: red; */
     }
     .timeLine-item-card > img {
-        height: 100%;
-        width: 40%;
+        height: 97%;
+        width: 38%;
+        margin-top: 3px;
+        margin-left: 3px;
         max-width: 250px;
         max-height: 200px;
-        border: 2px solid;
-        border-radius: 15px;
     }
     .timeLine-item-card {
         cursor: pointer;
         width: 80%;
         height: 80%;
-        top: 45px;
+        max-height: 180px;
+        top: 30px;
         left: 60px;
-        /* background-color: red; */
+        background: #f3d4d1;
         position: absolute;
         display: flex;
     }
@@ -144,6 +153,7 @@ import mySelector from '../components/my-selector.vue'
     .timeLine-item {
         height: 40%;
         width: 100%;
+        max-height: 230px;
         /* border: 1px solid; */
         position: relative;
     }
