@@ -1,14 +1,7 @@
 <!-- zion首页 -->
 <template>
     <div>
-        <div class="top-bar">
-            <div id="bar-body" class="bar-body"></div>
-            <div id="outline-more" class="outline-more">
-                <i class="imgthree fa fa-dedent fa-2x"></i>
-            </div>
-            <div id="bar-logo" @click="goHome()" class="bar-logo"><img src='../../static/img/logo.jpeg'></div>
-            <div id="bar-but-home" @click="goHome()" class="bar-but-home">HOME</div>
-        </div>
+        <topBar/>
         <zion-menu ref="cliCatalog"></zion-menu>
         <zion-catalog  v-show="catalogShow"></zion-catalog>
         <zion-self v-show="selfShow"></zion-self>
@@ -20,6 +13,7 @@
 import menu from '../components/navigation.vue';
 import catalog from './Catalog.vue';
 import aboutMe from './AboutMe.vue';
+import topBar from '../components/top-bar.vue'
 
     export default {
         name:'zion',
@@ -53,7 +47,8 @@ import aboutMe from './AboutMe.vue';
         components: { //定义组件
             'zion-menu':menu,
             'zion-catalog':catalog,
-            'zion-self':aboutMe
+            'zion-self':aboutMe,
+            'topBar':topBar
         },
         created() { //生命周期函数
 
@@ -80,38 +75,4 @@ import aboutMe from './AboutMe.vue';
         font-size: 25px;
         cursor: pointer;
     }
-    .outline-more{
-        position: absolute;
-        display: none;
-    }
-    .bar-logo > img {
-        height: 100%;
-        width: 35px;
-    }
-    .bar-logo {
-        position: absolute;
-        left: 5px;
-        cursor: pointer;
-    }
-
-    .bar-body {
-        height: 100%;
-        width: 100%;
-        opacity: 0.5;
-        background-color: black;
-        top: 0;
-        position: absolute;
-    }
-
-    .top-bar {
-        height: 35px;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 999;
-    }
-
-    
-    
-
 </style>

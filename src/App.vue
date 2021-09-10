@@ -30,7 +30,7 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font: inherit;
+  // font: inherit;
 }
 html {
 	  height:100%;

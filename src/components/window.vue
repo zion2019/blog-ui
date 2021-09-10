@@ -35,6 +35,7 @@
 </script>
 
 <style  scoped>
+
 /*  self 样式 start  */
 .window-self{
     height: 30%;
@@ -141,6 +142,13 @@
 
 /* 手机端样式 */
 @media screen and (max-width: 400px) {
+    #window-catalog {
+        top: 7%;
+        left:0%;
+        height: 90%;
+        width: 98%;
+    }
+
     #window-self {
         width: 90%;
         height: 300px;

@@ -87,7 +87,7 @@ export default {
         styleVar() {
             return {
                 '--select-height': this.height + 'px',
-                '--select-width': this.width + '%'
+                '--select-width': this.width + 'px'
             }
         }
     },
@@ -100,9 +100,9 @@ export default {
 </script>
 <style scoped>
     .my_select {
-        position: absolute;
-        margin-left: 5%;
-        margin-top: 5%;
+        /* position: absolute; */
+        margin-left: 5px;
+        margin-top: 20%;
         border: 2px solid;
         border-radius: 5px;
         height: var(--select-height);

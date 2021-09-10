@@ -4,7 +4,7 @@ import qs from 'qs';
 //公共路径
 // let portUrl = "http://www.mangoya.cn/port/";
 // let portUrl = "http://"+window.location.host+"/";
-let portUrl = "http://127.0.0.1:9302/";
+let portUrl = "http://42.193.143.15:9302/";
 
 /**
  * 用户登录
@@ -230,7 +230,7 @@ const saveEditBlog = (blog,successCb,failCb) =>{
  * @param {成功回调} successCb 
  * @param {失败回调} failCb 
  */
-const blogInfo = (blogId,successCb,failCb) => {
+const blogInfo = (blogId) => {
     // 获取token
     var user = JSON.parse(sessionStorage.getItem('user'));
     let token = '';
@@ -239,14 +239,20 @@ const blogInfo = (blogId,successCb,failCb) => {
     }
 
     let url = portUrl + 'blog/post/info/'+blogId;
-    axios.get(url,{headers:{'Authorization':token}
-    }).then(num => {
-        if(num.data.code == '0000'){
-            successCb && successCb(num.data.data)
-        }else{
-            failCb && failCb(num.data)
-        }
+    return new Promise((resolve,reject)=>{
+        axios.get(url,{headers:{'Authorization':token}
+        }).then(num => {
+            
+            if(num.data.code == '0000'){
+                resolve(num.data.data);
+                // successCb && successCb(num.data.data)
+            }else{
+                reject(num.data);
+                // failCb && failCb(num.data)
+            }
+        })
     })
+    
 
 }
 

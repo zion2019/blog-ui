@@ -8,7 +8,7 @@
                 <br/>
                 学习&nbsp;•&nbsp;生活&nbsp;•&nbsp;分享
                 <br/>
-                各位大佬请戳Blog文件夹了解~
+                各位大佬请戳<a @click="showCatalog()" href="javascript:void(0);">Blog文件夹</a>了解~
             </div>
             <div class="bar">
                 <i @click="href('https://a1.qpic.cn/psc?/V13ppSdF0VAuNC/ruAMsa53pVQWN7FLK88i5mtFXPs42DfqHwzHskuAFhme.fZdxRsyPDj3*qt5pt1XFILBanedQsm0BfO4h43W6KwzLHXZiALtDFTKJMLQRBY!/c&ek=1&kp=1&pt=0&bo=AAIAAgAAAAABFzA!&t=5&tl=3&vuin=2628607936&tm=1626879600&sce=60-2-2&rf=0-0')" class="imgthree fa fa-weixin fa-1x"></i>
@@ -31,6 +31,9 @@ export default {
     methods:{
         href(url){
             window.open(url, "_blank");
+        },
+        showCatalog(){
+            this.$parent.showCatalog();
         },
     },
     components: { //定义组件

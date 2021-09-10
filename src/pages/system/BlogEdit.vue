@@ -73,18 +73,19 @@ export default {
 
     // 获取博客内容
     if(this.$route.query.blogId != undefined){
-        blogInfo(this.$route.query.blogId,(success)=>{
-            this.blog.title = success.data.title;
-            this.blog.id = success.data.id;
-            this.blog.categoryId = success.data.categoryId;
-            this.blog.content = success.data.content;
-            this.blog.coverImg = success.data.coverImg;
-            this.blog.styles = success.data.styles;
-            this.blog.profile = success.data.profile;
-        },(failed)=>{
-            console.log(failed);
-        });
-     }
+        blogInfo(this.$route.query.blogId).then(res => {
+            this.blog.title = res.title;
+            this.blog.id = res.id;
+            this.blog.categoryId = res.categoryId;
+            this.blog.content = res.content;
+            this.blog.coverImg = res.coverImg;
+            this.blog.styles = res.styles;
+            this.blog.profile = res.profile;
+        }).catch(reject => {
+            console.log(reject);
+        })
+    }
+    
   },
   methods: {
     saveOrEdit(){

@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 Vue.use(Router)
+const originalPush = Router.prototype.push
+	Router.prototype.push = function push(location) {
+   return originalPush.call(this, location).catch(err => err)
+}
 
 export default new Router({
 	scrollBehavior(to, from, savePosition) { // 在点击浏览器的“前进/后退”，或者切换导航的时候触发。

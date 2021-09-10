@@ -1,311 +1,212 @@
 <template>
     <div class="post-detail-body">
-        <div class="top-bar">
-            <div id="bar-body" class="bar-body"></div>
-            <div id="outline-more" class="outline-more" @click="showOutline">
-                <i class="imgthree fa fa-dedent fa-2x"></i>
+        <topBar @showLeft = "showLeft"/>
+        <div id = "articles" class="articles">
+            <!-- 文章目录 -->
+            <div id="article-menus" :class="sidebarClass">
+                <menu-tree :menus="menus" child-label="child"></menu-tree>
             </div>
-            <div id="bar-logo" @click="goHome()" class="bar-logo"><img src='../../static/img/logo.jpeg'></div>
-            <div id="bar-but-home" @click="goHome()" class="bar-but-home">HOME</div>
-        </div>
-        <!-- 博文、目录 -->
-        <div id="main" class="fix-sidebar">
-            <div :class="sidebarClass">
-                <div class="sidebar-inner">
-                    <div class="online-title">目录</div>
-                    <div class="ontline">
-                        <outline-tree :treeData="navTree" class="tree">
-                            <div slot-scope="{ data, parentData, level }">
-                                <div class="node-render-content" @click.stop="jumpToAnchor(data.el)">
-                                    {{ data.title }}
-                                </div>
-                            </div>
-                        </outline-tree>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="content" id = 'content'>
+            <main id =  "article-content" class="article-content">
                 <div class="content-title">
                     <span>{{postTitle}}</span>
                     <div class="title-profiles">
-                    <div><i class="imgthree fa fa-calendar fa-1x"></i>&nbsp; 2019年12月12日&nbsp; &nbsp; <br/></div>
-                    <div><i class="imgthree fa fa-eye fa-1x"></i>&nbsp; 888&nbsp; &nbsp; </div>
-                    <div><i class="imgthree fa fa-commenting-o fa-1x"></i>&nbsp;16&nbsp; &nbsp; 
-                    
-                    </div>
+                    <div><i class="imgthree fa fa-calendar fa-1x"></i>&nbsp; {{createdTime}}&nbsp; &nbsp; <br/></div>
                 </div>
                 </div>
-            
-                <div class="content-data" v-html="content" v-outline="{
-                        callback: refreshNavTree,
-                        selectors: ['h1','h2', 'h3', 'h4'],
-                        exceptSelector: '[un-nav]' }"></div>
-            </div>
-
+                <div class="entry-content" v-html="content"></div>
+            </main>
         </div>
-
-        
-        
     </div>
     
 </template>
 <script>
-import {blogInfo} from '../utils/server.js'
+import topBar from '../components/top-bar.vue'
+import menuTree from '../components/menu-tree.vue'
+import sectionTitle from '@/components/section-title'
+import {blogInfo} from '../utils/server.js' 
+import prismjs from '../../static/prism/prism.js'
+import prismCss from '../../static/prism/prism.css'
 export default {
     data() {
         return {
-            sidebarClass:"sidebar",
-            navTree: [],
-            postTitle:"",
-            content:"",
-        };
+            showDonate: false,
+            comments: [],
+            menus: [],
+            postTitle: "TITLE",
+            sidebarClass: 'article-menus',
+            content: "",
+            createdTime:"2020-01-01"
+        }
     },
     created(){
-        console.log(this.$route.query.postId);
-        blogInfo(this.$route.query.postId
-        ,(res)=>{
-            console.log(res);
+         blogInfo(this.$route.query.postId).then(res => {
+            // this.content = this.replaceHtml(res.content);
             this.content = res.content;
             this.postTitle = res.title;
-        }
-        ,(failed) => {
-            console.log("接口请求错误");
-        }
-        )
-    },
-    methods:{
-        refreshNavTree (treeData) {
-            this.navTree = treeData
-        },
-        jumpToAnchor (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
-        },
-        showOutline(){
-            this.sidebarClass = this.sidebarClass == "sidebar open" ? "sidebar":"sidebar open";
-        },
-        goHome(){
-                this.$router.push({
-                    path: '/',
-                });
-        },
+            this.createdTime = res.createdTime;
+            this.$nextTick(() => {
+                prismjs.highlightAll();
+            });
+         }).catch(error => {
+            console.log(error);
+         });
+
     },
     components: { //定义组件
-        
+        'topBar':topBar,
+        'menuTree':menuTree,
+        'sectionTitle':sectionTitle
     },
-};
-
+    methods: {
+        replaceHtml(htmlContent) {
+            let reg=new RegExp("<pre","g"); //创建正则RegExp对象
+            let stringObj=htmlContent;
+            let newstr=stringObj.replace(reg,`<pre class="line-numbers "`);
+            return newstr
+        },
+        showLeft(){
+            this.sidebarClass = this.sidebarClass == "article-menus open" ? "article-menus":"article-menus open";
+        },
+        fetchH(arr,left,right){
+            if (right) {
+                return arr.filter(item => item.offsetTop > left && item.offsetTop < right)
+            }else {
+                return arr.filter(item => item.offsetTop > left)
+            }
+        },
+        // 生成目录
+        createMenus(){
+            let arr = []
+            let idIndex = 0;
+            for(let i=6;i>0;i--){
+                let temp = []
+                let content = document.querySelector(".entry-content");
+                // console.log(content);
+                let e = content.querySelectorAll(`h${i}`)
+                // console.log('hahah',document.querySelector(".entry-content").querySelectorAll(`h1`).length);
+                for (let j=0;j<e.length;j++){
+                    idIndex ++;
+                    e[j].id = 'id'+idIndex;
+                    let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
+                    temp.push({
+                        h: i,
+                        title: e[j].innerText,
+                        id: e[j].id,
+                        // id: i + '@'+ j,
+                        offsetTop: e[j].offsetTop,
+                        child
+                    })
+                }
+                if (temp.length){
+                    arr = temp
+                }
+            }
+            this.menus = arr
+        }
+    },
+    mounted(){
+        setTimeout(()=>{ this.createMenus();} ,300);
+    },
+}
 </script>
-
-<style scoped>
-    /** 博文内容 */
-    .node-render-content {
-        cursor: pointer;
-        white-space: nowrap;
-        line-height: 1.8;
-        text-decoration: underline;
+<style scoped lang="less">
+    /** 标题样式 */
+    .content-title {
+        text-align: left;
+        font-size: 30px;
+        font-weight: bold;
+        padding-top: 5px;
     }
-
     .title-profiles {
         width: 100%;
         height: 5%;
         display: flex;
-        /* margin-left: 2%; */
+        // margin-left: 2%;
         font-size: 15px;
-        color: #909399;
+        color: black;
     }
-    
-    .content-title {
-        border-bottom: 2px solid;
-        text-align: left;
-        font-size: 20px;
-        height: 60px;
-        font-weight: bold;
-        padding-top: 5px;
-        padding-left: 20px;
+    .imgthree {
+        color: black;
+        margin-top: 3px;
+    }
+    .entry-content{
+        margin-top: 5px;
     }
 
-    .online-title {
-        border-bottom: 2px solid;
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-        height: 60px;
-        padding-top: 5px;
+    // 底色
+    .post-detail-body{
+        background:white;
+        height: 100%;
+        overflow-y: auto;
+        width: 100%;
     }
-
-    .content-data{
-        padding-left: 20px;
-        padding-top: 20px;
-        min-height: 1000px;
-    }
-
-    .ontline {
-        padding-top: 20px;
-        padding-left: 35px;
-        height: 60px;
-    }
-
-    #main {
-        position: relative;
-        z-index: 1;
-        padding: 0 10px 0 10px;
-        overflow-x: hidden;
-        margin-top: 35px;
-    }
-
-    /* 目录 */
-    #main.fix-sidebar {
+    .articles {
         position: static;
     }
-
-    #main.fix-sidebar .sidebar {
-        position: fixed;
+    #articles {
+        position: relative;
+        z-index: 1;
+        padding: 0 60px 30px;
+        overflow-x: hidden;
     }
-
-    .sidebar .sidebar-inner {
-        width: 96%;
-        height: 100%;
-        margin-top: 35px;
-        margin-left: 5px;
-        /* padding: 35px 0px 60px 20px; */
-        /* border-radius: 20px; */
-        background-color: white;
-        /* border: 2px solid; */
+    .article-content {
+        position: relative;
+        padding: 35px 0;
+        max-width: 700px;
+        margin: 0 auto;
+        padding-left: 50px;
+        display: flex;
+        flex-direction: column;
     }
-
-    .sidebar {
+    .article-menus {
         position: absolute;
         z-index: 10;
-        top: 0%;
+        top: 61px;
+        width: 260px;
+        padding: 0px 0px 60px 20px;
+        box-shadow: 0 2px 5px #888888;
         left: 0;
-        width: 280px;
         bottom: 0;
         overflow-x: hidden;
-        /* overflow-y: auto; */
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: none;
-    }
-    .content {
-        position: relative;
-        /* padding: 35px 0; */
-        max-width: 1000px;
-        margin: 0 300px 0 auto;
-        /* padding-left: 50px; */
+        overflow-y: auto;
+        position: fixed;
         background-color: white;
-        /* border-radius: 25px;
-        border: 2px solid; */
-        box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+        /* display: inline-block; */
+        // -webkit-overflow-scrolling: touch;
     }
 
-    /* 宽度小于 1400px 时 */
-    @media screen and (max-width: 1400px) {
-        #content {
-            margin-right: 0;
-        }
-    }
-
-    /* 宽度小于1000px时，目录栏缩小 */
+        /* 宽度小于1000px时，目录栏缩小 */
     @media screen and (max-width: 1280px) {
-
-        .sidebar {
-            position: fixed;
-            height: 100%;
-            top: 0;
+        .article-menus {
+            position: absolute;
+            z-index: 10;
+            top: 61px;
+            width: 260px;
+            padding: 0px 0px 60px 20px;
+            // box-shadow: 0 2px 5px rgb(0 0 0 / 10%);
             left: 0;
-            box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            bottom: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: fixed;
+            /* display: inline-block; */
+            -webkit-overflow-scrolling: touch;
+            // box-shadow: 0 0 10px rgb(0 0 0 / 20%);
             transition: all 0.4s cubic-bezier(0.4, 0, 0, 1);
             -webkit-transform: translate(-280px, 0);
             transform: translate(-280px, 0);
         }
 
-        .sidebar.open {
+        .article-menus.open {
             -webkit-transform: translate(0, 0);
             transform: translate(0, 0);
         }
 
-        #outline-more{
-            position: absolute;
-            display: block;
-            left: 10%;
-            cursor: pointer;
-        }
-
-        .imgthree {
-            color: white;
-            margin-top: 3px;
-        }
-        
-        #bar-logo {
-            position: absolute;
-            left: 20%;
-            cursor: pointer;
-        }
-
-        #bar-but-home[data-v-af546162] {
-            display: none;
+        #article-content {
+            padding-left:  0;
         }
     }
     
     
-    /**导航条 */
-    .bar-but-home {
-        position: absolute;
-        left: 55px;
-        height: 35px;
-        line-height: 35px;
-        color: white;
-        font-family: fantasy;
-        font-size: 25px;
-        cursor: pointer;
-    }
-    .outline-more{
-        position: absolute;
-        display: none;
-    }
-    .bar-logo > img {
-        height: 100%;
-        width: 35px;
-    }
-    .bar-logo {
-        position: absolute;
-        left: 5px;
-        cursor: pointer;
-    }
-
-    .bar-body {
-        height: 100%;
-        width: 100%;
-        opacity: 0.5;
-        background-color: black;
-        top: 0;
-        position: absolute;
-    }
-
-    .top-bar {
-        height: 35px;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        z-index: 999;
-    }
-
-    /* 滚动条样式 */
-    ::-webkit-scrollbar-track {
-        background-color: rgb(250, 244, 230);
-        display: none;
-    }
-    ::-webkit-scrollbar {
-        width: 4px;
-        height: 18%;
-        background-color: black;
-        display: none;
-    }
-    ::-webkit-scrollbar-thumb {
-        border-radius: 50px;
-        background-color: #555;
-        display: none;
-    }
 </style>
+

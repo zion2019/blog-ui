@@ -1,5 +1,5 @@
 <template>
-  <div class="zion-menu">
+  <div class="zion-menu" id = "zion-menu">
     <div class="unit-menu"   @click="showSelf()">
       <i  :class="homeIconClass"></i>
       <!-- <img class="menu-icon" src="static/img/butten.png" /> -->
@@ -51,6 +51,15 @@
 </script>
 
 <style scoped>
+
+
+  /* 手机端样式 */
+  @media screen and (max-width: 400px) {
+      #zion-menu{
+        display: none;
+      }
+  }
+
 /*********头部导航栏********/
 .zion-menu {
   position: absolute;
