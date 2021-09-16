@@ -12,9 +12,6 @@
                 <post :post="item" :key="item.id"></post>
             </template>
         </div>
-
-            
-
         </div>
     </zion-window>
 </template>

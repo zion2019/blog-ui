@@ -141,11 +141,11 @@
 }
 
 /* 手机端样式 */
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 550px) {
     #window-catalog {
-        top: 7%;
-        left:0%;
-        height: 90%;
+        top: 10%;
+        left: 0%;
+        height: 80%;
         width: 98%;
     }
 
@@ -169,7 +169,7 @@
     }
 
     .unit-menu {
-        display: none;
+        /* display: none; */
     }
 }
 

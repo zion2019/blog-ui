@@ -47,7 +47,7 @@ export default {
         margin: auto;
         width: 400px;
         font-family: fantasy;
-        font-size: 20px;
+        font-size: 19px;
     }
     .aboutMe .bar {
         display: flex;

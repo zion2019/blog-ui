@@ -8,6 +8,7 @@ const originalPush = Router.prototype.push
 }
 
 export default new Router({
+	mode:'history',
 	scrollBehavior(to, from, savePosition) { // 在点击浏览器的“前进/后退”，或者切换导航的时候触发。
 		if (savePosition) {
 			return savePosition;
@@ -49,7 +50,7 @@ export default new Router({
 			name: 'Login'
 		},
 		{
-			path: '/post',
+			path: '/post/:id',
 			component: resolve => require(['../pages/PostDetail.vue'], resolve),
 			meta: {
 				auth: true

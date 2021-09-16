@@ -21,7 +21,6 @@
                 });
             },
             showLeft(){
-                console.log('showLeft');
                 this.$emit('showLeft');
             }
         }
@@ -75,7 +74,7 @@
     @media screen and (max-width: 1280px) {
         #bar-logo {
             position: absolute;
-            left: 20%;
+            left: 2%;
             cursor: pointer;
         }
 
@@ -91,7 +90,7 @@
         #outline-more{
             position: absolute;
             display: block;
-            left: 10%;
+            left: 15%;
             cursor: pointer;
         }
 

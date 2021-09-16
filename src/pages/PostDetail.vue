@@ -4,8 +4,15 @@
         <div id = "articles" class="articles">
             <!-- 文章目录 -->
             <div id="article-menus" :class="sidebarClass">
+                <div class="card-title">目录</div>
                 <menu-tree :menus="menus" child-label="child"></menu-tree>
             </div>
+
+            <!-- 评论卡片 -->
+            <!-- <div id = "article-message" class="article-message">
+                <div class="card-title">评论区</div>
+            </div> -->
+
             <main id =  "article-content" class="article-content">
                 <div class="content-title">
                     <span>{{postTitle}}</span>
@@ -39,7 +46,7 @@ export default {
         }
     },
     created(){
-         blogInfo(this.$route.query.postId).then(res => {
+         blogInfo(this.$route.params.id).then(res => {
             // this.content = this.replaceHtml(res.content);
             this.content = res.content;
             this.postTitle = res.title;
@@ -110,7 +117,32 @@ export default {
 }
 </script>
 <style scoped lang="less">
+    /**评论卡牌你*/
+    .article-message {
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: .25rem;
+        background-color: white;
+        position: fixed;
+        width: 300px;
+        left: 10px;
+        top: 420px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 360px;
+    }
+
     /** 标题样式 */
+    .card-title{
+        margin-bottom: 0!important;
+        font-weight: 500;
+        font-size: 1.25rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        padding-left: 1em;
+        border-bottom: 1px solid;
+        border-color: #efefee;
+    }
+
     .content-title {
         text-align: left;
         font-size: 30px;
@@ -130,12 +162,12 @@ export default {
         margin-top: 3px;
     }
     .entry-content{
-        margin-top: 5px;
+        margin-top: 20px;
     }
 
     // 底色
     .post-detail-body{
-        background:white;
+        background:#eaecef;
         height: 100%;
         overflow-y: auto;
         width: 100%;
@@ -146,33 +178,46 @@ export default {
     #articles {
         position: relative;
         z-index: 1;
-        padding: 0 60px 30px;
+        padding: 0 50px 30px 340px;
         overflow-x: hidden;
     }
     .article-content {
         position: relative;
         padding: 35px 0;
-        max-width: 700px;
-        margin: 0 auto;
-        padding-left: 50px;
+        margin: 61px auto;
+        padding: 0 20px;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
         flex-direction: column;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: .25rem;
+        background-color: white;
     }
     .article-menus {
         position: absolute;
         z-index: 10;
         top: 61px;
-        width: 260px;
-        padding: 0px 0px 60px 20px;
-        box-shadow: 0 2px 5px #888888;
-        left: 0;
+        width: 300px;
+        height: 350px;
+        left: 10px;
         bottom: 0;
         overflow-x: hidden;
         overflow-y: auto;
         position: fixed;
         background-color: white;
-        /* display: inline-block; */
-        // -webkit-overflow-scrolling: touch;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: .25rem;
+    }
+
+    @media screen and (max-width: 550px) {
+        img{
+            width: 500px;
+            height: 400px;
+        }
     }
 
         /* 宽度小于1000px时，目录栏缩小 */
@@ -203,7 +248,12 @@ export default {
         }
 
         #article-content {
-            padding-left:  0;
+            padding-left:  5px;
+            margin: 0 auto;
+        }
+
+        #articles{
+            padding: 30px 0 30px;
         }
     }
     

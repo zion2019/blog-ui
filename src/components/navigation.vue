@@ -54,7 +54,7 @@
 
 
   /* 手机端样式 */
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 550px) {
       #zion-menu{
         display: none;
       }

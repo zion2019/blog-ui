@@ -1,8 +1,8 @@
 {
-  "name": "myblogvue",
+  "name": "zion-blog-ui",
   "version": "1.0.0",
   "description": "代码代码...码码码",
-  "author": "aimee",
+  "author": "zion",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",

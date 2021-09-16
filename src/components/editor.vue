@@ -46,7 +46,7 @@ export default {
     return {
       // 定义v-model双向绑定值，然后让其默认等于父组件传递过来的值
       sunHtml: this.tinymceHtml,
-      uploadUrl: process.env.UPLOAD_URL, // 自己定义的文件上传到服务器的上传地址
+      uploadUrl: process.env.BACKEND_URL + 'blog/file/upload', // 自己定义的文件上传到服务器的上传地址
       picUrl: process.env.PIC_URL, // 上传到服务器后读取前缀路径（用于拼接显示使用的）
       // tinymce配置项 着重将下方两个路径换掉就可以了
       init: {
@@ -87,25 +87,32 @@ export default {
       // append 方法中的第一个参数就是 我们要上传文件 在后台接收的文件名
       // 这个值要根据后台来定义
       // 第二个参数是我们上传的文件
-      formdata.append("file", blobInfo.blob());
+      formdata.append("file", blobInfo.blob()); 
+      var user = JSON.parse(sessionStorage.getItem('user'));
+      let token = '';
+      if(user != undefined && user != null){
+        token = user.token_type+' '+user.access_token;
+      }
+
       // axios 定义上传方法
       axios({
         method: "post", // post方法
         url: this.uploadUrl, // 请求上传图片服务器的路径
+
         headers: {
           // 配置headers请求头
-          Authorization: localStorage.getItem("logintoken"), // token认证，看后台
+          Authorization: token, // token认证，看后台
           "Content-Type": "application/x-www-form-urlencoded", // 采用表单上传的方式，看后台如何接受
         },
         data: formdata, // 请求数据formdata
       }).then((res) => {
-        if (res.data.code != 200) {
+        if (res.data.code !== '0000') {
           // 上传失败执行此方法，将失败信息填入参数中
-          failure("HTTP Error: " + res.msg);
+          failure("HTTP Error: " + res.data.message);
           return;
         }
         // 上传成功之后，将对应完整的图片路径拼接在success的参数中
-        success(this.picUrl + res.data.fileUrl);
+        success(this.picUrl + res.data.data.fileUrl);
       });
     },
   },

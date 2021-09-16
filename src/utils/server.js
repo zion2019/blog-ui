@@ -4,7 +4,7 @@ import qs from 'qs';
 //公共路径
 // let portUrl = "http://www.mangoya.cn/port/";
 // let portUrl = "http://"+window.location.host+"/";
-let portUrl = "http://42.193.143.15:9302/";
+let portUrl = process.env.BACKEND_URL;
 
 /**
  * 用户登录
@@ -252,8 +252,40 @@ const blogInfo = (blogId) => {
             }
         })
     })
-    
+}
 
+const upload = (file,successCb,failCb) => {
+    // 获取token
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    let token = '';
+    if(user != undefined && user != null){
+      token = user.token_type+' '+user.access_token;
+    }
+
+    let url = portUrl + 'blog/file/upload/';
+    let formdata = new FormData();
+    formdata.append("file",file);
+
+    axios({
+        method: "post", // post方法
+        url: url, // 请求上传图片服务器的路径
+        headers: {
+            // 配置headers请求头
+            Authorization: token, // token认证，看后台
+            "Content-Type": "application/x-www-form-urlencoded", // 采用表单上传的方式，看后台如何接受
+        },
+        data: formdata, // 请求数据formdata
+    }).then((res) => {
+        if (res.data.code !== '0000') {
+            // 上传失败执行此方法，将失败信息填入参数中
+            failure("HTTP Error: " + res.data.message);
+            return;
+        }
+        // 上传成功之后，将对应完整的图片路径拼接在success的参数中
+        successCb(process.env.PIC_URL + res.data.data.fileUrl);
+    }).catch(res => {
+        failCb(res);
+    })
 }
 
 export {
@@ -273,4 +305,5 @@ export {
         removeBlog,
         saveEditBlog,
         blogInfo,
+        upload,
 }

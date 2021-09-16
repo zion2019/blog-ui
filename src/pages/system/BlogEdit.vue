@@ -19,11 +19,19 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="封面图片">
-                <el-input v-model="blog.coverImg"></el-input>
+                <el-upload
+                    class="avatar-uploader"
+                    :action="uploadUrl"
+                    :headers="headers"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="blog.coverImg" :src="blog.coverImg" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+                <!-- <el-input v-model="blog.coverImg"></el-input> -->
             </el-form-item>
-            <el-form-item label="封面预览">
-                <el-image  style="width: 100px; height: 100px; margin-left:10px;" :src= blog.coverImg></el-image>
-            </el-form-item>
+
             <el-form-item label="样式代码">
                 <el-input v-model="blog.styles"></el-input>
             </el-form-item>
@@ -44,7 +52,7 @@
   </div>
 </template>
 <script>
-import {blogCategorySelection,saveEditBlog,blogInfo} from '../../utils/server.js'
+import {blogCategorySelection,saveEditBlog,blogInfo,upload} from '../../utils/server.js'
 
 import Editor from "@/components/editor.vue";
 export default {
@@ -63,9 +71,20 @@ export default {
             styles:"",
             profile:""
         },
+        uploadUrl:'',
+        headers:{}
     };
   },
   created(){
+    // 上传文件地址
+    this.uploadUrl = process.env.BACKEND_URL+'blog/file/upload/';
+    // headers
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    if(user != undefined && user != null){
+      let token = user.token_type+' '+user.access_token;
+      this.headers = {'Authorization':token}
+    }
+
      // 博客类别下拉框
     blogCategorySelection((categorys)=>{
         this.catagorys = categorys;
@@ -96,6 +115,30 @@ export default {
               this.$alert(failed.message);
           })
     },
+    handleAvatarSuccess(res, file) {
+        if(file.response.code === '0000'){
+            this.blog.coverImg = process.env.PIC_URL+file.response.data.fileUrl;
+        }else{
+            console.log(file);
+        }
+        // upload(file.raw,(success)=>{
+        //     this.blog.coverImg = success;
+        // },(failed) => {
+        //     console.log(failed);
+        // });
+    },
+    beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+    }
   }
 };
 
@@ -110,4 +153,28 @@ export default {
     margin-left: 94%;
     margin-top: 1%;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+
 </style>

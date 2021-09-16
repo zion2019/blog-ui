@@ -1,7 +1,7 @@
 <!-- zion首页 -->
 <template>
     <div>
-        <topBar/>
+        <topBar @showLeft="showSelf" />
         <zion-menu ref="cliCatalog"></zion-menu>
         <zion-catalog  v-show="catalogShow"></zion-catalog>
         <zion-self v-show="selfShow"></zion-self>

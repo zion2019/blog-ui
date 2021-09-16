@@ -2,12 +2,12 @@
     <article class="post post-list">
         <div class="post-entry">
             <div class="feature">
-                <router-link :to="`/post?postId=${post.id}`">
+                <router-link :to="`/post/${post.id}`">
                     <img :src="post.coverImg"/>
                 </router-link>
             </div>
             <h1 class="entry-title">
-                <router-link :to="`/post?postId=${post.id}`"><!-- <span v-if="post.isTop" style="color:#ff6d6d;font-weight:600">[置顶] </span> -->{{post.title}}</router-link>
+                <router-link :to="`/post/${post.id}`"><!-- <span v-if="post.isTop" style="color:#ff6d6d;font-weight:600">[置顶] </span> -->{{post.title}}</router-link>
             </h1>
             <div class="p-time">
                 <i class="iconfont iconmeditor-time"></i> {{post.createdTime}} <i class="fa fa-fire fa-lg" style="margin-left: 5px;color: #ff6d6d;"></i>
@@ -15,18 +15,18 @@
             <p class="summary">{{post.profile}}</p>
             <footer class="entry-footer">
                 <div class="post-more">
-                    <router-link :to="`/post?postId=${post.id}`"><i class="fa fa-arrow-circle-right" style="font-size: 25px;"></i></router-link>
+                    <router-link :to="`/post/${post.id}`"><i class="fa fa-arrow-circle-right" style="font-size: 25px;"></i></router-link>
                 </div>
                 <div class="info-meta">
                     <div class="comnum">
                         <span>
                             <i class="fa fa-comments fa-lg"></i>
-                            <router-link :to="`/post?postId=${post.id}`">888 条评论</router-link>
+                            <router-link :to="`/post/${post.id}`">{{post.messageCount}} 条评论</router-link>
                             <!-- <a href="https://zhebk.cn/Web/Akina.html">888 条评论</a> -->
                         </span>
                     </div>
                     <div class="views">
-                        <span><i class="fa fa-eye fa-lg"></i>888 热度</span>
+                        <span><i class="fa fa-eye fa-lg"></i>{{post.viewCount}} 热度</span>
                     </div>
                 </div>
             </footer>
