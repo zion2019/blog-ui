@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {UserLogin} from '../../utils/server.js'
+import {UserLogin2} from '../../utils/server.js'
 export default {
     data(){
         return {
@@ -55,28 +55,60 @@ export default {
                 if(valid){
                     this.logining = true;
                     // 请求登录接口
-                    UserLogin(this.ruleForm2.username,this.ruleForm2.password,(response) => {
+                    UserLogin2(this.ruleForm2.username,this.ruleForm2.password,(response) => {
                         if(response == undefined){
                             this.logining = false;
-                            this.$alert('服务错误', '登录失败', { confirmButtonText: 'ok'})
+                            this.$alert('帐号错误', '登录失败', { confirmButtonText: 'ok'})
                         }else{
-                            var accessToken = response.access_token;
-                            if(accessToken != null && accessToken != undefined){
-                                this.logining = false;
-                                sessionStorage.setItem('user',JSON.stringify(response));
-                                this.$router.push({path: '/system'});
+                            if(response.code === '0000'){
+                                var accessToken = response.data.token;
+                                if(accessToken != null && accessToken != undefined){
+                                    this.logining = false;
+                                    sessionStorage.setItem('user',JSON.stringify({"token_type":"","access_token":accessToken}));
+                                    this.$router.push({path: '/system'});
+                                }else{
+                                    this.logining = false;
+                                    this.$alert(response.data.msg, '登录失败', { confirmButtonText: 'ok'});
+                                }
+                                
                             }else{
                                 this.logining = false;
-                                this.$alert(response.data.msg, '登录失败', { confirmButtonText: 'ok'});
+                                this.$alert('帐号错误', '登录失败', { confirmButtonText: 'ok'})
                             }
                         }
                     })
-
                 }else{
                     console.log('error submit!');
                     return false;
                 }
             })
+
+            // this.$refs.ruleForm2.validate((valid) => {
+            //     if(valid){
+            //         this.logining = true;
+            //         // 请求登录接口
+            //         UserLogin(this.ruleForm2.username,this.ruleForm2.password,(response) => {
+            //             if(response == undefined){
+            //                 this.logining = false;
+            //                 this.$alert('服务错误', '登录失败', { confirmButtonText: 'ok'})
+            //             }else{
+            //                 var accessToken = response.access_token;
+            //                 if(accessToken != null && accessToken != undefined){
+            //                     this.logining = false;
+            //                     sessionStorage.setItem('user',JSON.stringify(response));
+            //                     this.$router.push({path: '/system'});
+            //                 }else{
+            //                     this.logining = false;
+            //                     this.$alert(response.data.msg, '登录失败', { confirmButtonText: 'ok'});
+            //                 }
+            //             }
+            //         })
+
+            //     }else{
+            //         console.log('error submit!');
+            //         return false;
+            //     }
+            // })
         }
     }
 };
@@ -88,13 +120,18 @@ export default {
     height: 100%;
 }
 .login-page {
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    margin: 180px auto;
+   border-radius: 5px;
+    position: absolute;
+    /* margin: auto; */
+    /* margin-left: 40%; */
+    /* margin-top: 15%; */
+    top: 30%;
+    left: 35%;
     width: 350px;
     padding: 35px 35px 15px;
     background: #fff;
     border: 1px solid #eaeaea;
+    -webkit-box-shadow: 0 0 25px #cac6c6;
     box-shadow: 0 0 25px #cac6c6;
 }
 label.el-checkbox.rememberme {

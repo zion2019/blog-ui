@@ -4,7 +4,7 @@
             <div id="outline-more" class="outline-more" @click="showLeft">
                 <i class="imgthree fa fa-dedent fa-2x"></i>
             </div>
-            <div id="bar-logo" @click="goHome()" class="bar-logo"><img src='../../static/img/logo.jpeg'></div>
+            <div id="bar-logo" @click="goHome()" class="bar-logo"><img :src="logurl"></div>
             <div id="bar-but-home" @click="goHome()" class="bar-but-home">HOME</div>
         </div>
 </template>
@@ -12,6 +12,7 @@
     export default {
         data() {
             return {
+                "logurl": process.env.PIC_URL+"2021/9/logo.jpeg",
             };
         },
         methods:{

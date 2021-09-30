@@ -112,7 +112,7 @@ export default {
           return;
         }
         // 上传成功之后，将对应完整的图片路径拼接在success的参数中
-        success(this.picUrl + res.data.data.fileUrl);
+        success(process.env.PIC_URL + res.data.data.fileUrl);
       });
     },
   },

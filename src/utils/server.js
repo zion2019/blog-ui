@@ -25,6 +25,23 @@ const UserLogin =  (username,password,callback) =>{
 }
 
 /**
+ * 用户登录
+ * @param {用户账号} username 
+ * @param {密码} password 
+ * @param {回调} callback 
+ */
+ const UserLogin2 =  (username,password,callback) =>{
+    let url = portUrl + 'blog/login';
+    var params = {
+        'account': username,
+        'password': password
+    }
+    axios.post( url ,params,{headers:{'Authorization':'Basic cmVzb3VyY2Utc2VydmVyOnJlc291cmNlLXNlcnZlcg=='}})
+        .then(num => {callback && callback(num.data)})
+        .catch(error =>  { callback && callback(error.response)})
+}
+
+/**
  * 查询文章分类
  * @param {当前页数}} current 
  * @param {分页大小} size 
@@ -306,4 +323,5 @@ export {
         saveEditBlog,
         blogInfo,
         upload,
+        UserLogin2,
 }

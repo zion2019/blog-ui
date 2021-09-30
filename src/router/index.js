@@ -28,33 +28,21 @@ export default new Router({
 	routes: [{
 			path: '/',
 			component: resolve => require(['../pages/Home.vue'], resolve),
-			meta: {
-				auth: true
-			},
 			name: 'Home'
 		}, //首页
 		{
 			path: '/home',
 			component: resolve => require(['../pages/Home.vue'], resolve),
-			meta: {
-				auth: true
-			},
 			name: 'Home'
 		},
 		{
 			path: '/login',
 			component: resolve => require(['../pages/system/Login.vue'], resolve),
-			meta: {
-				auth: true
-			},
 			name: 'Login'
 		},
 		{
 			path: '/post/:id',
 			component: resolve => require(['../pages/PostDetail.vue'], resolve),
-			meta: {
-				auth: true
-			},
 			name: 'post'
 		},
 		{
@@ -66,6 +54,9 @@ export default new Router({
 				{path: '/catalogManager',component: ()=> import('@/pages/system/CatalogManager.vue')},
 				{path: '/blogEdit',component: ()=> import('@/pages/system/BlogEdit.vue')},
 			],
+			meta: {
+				auth: true
+			},
 			name: 'SystemManager'
 		}
 	]

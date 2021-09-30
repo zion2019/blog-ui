@@ -4,6 +4,7 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BACKEND_URL: '"http://42.193.143.15:9302/"',
-  PIC_URL: '"http://42.193.143.15/image/"',
+  BACKEND_URL: '"https://www.zion.hi.cn/api/"',
+  PIC_URL: '"https://www.zion.hi.cn/image/"',
 })
+
